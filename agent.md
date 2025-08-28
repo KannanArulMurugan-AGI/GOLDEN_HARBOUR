@@ -139,3 +139,197 @@ The backend is powered by **Firebase**, and the frontend is built with **Kombai 
 * **Kombai** → Convert UI/UX designs into working frontend code.
 * **Firebase Studio** → Manage backend (auth, db, hosting, functions, messaging).
 
+
+
+AI Coding Assistants
+1. Jules (Overall Project Manager & Integrator) 🤖
+Role: Jules acts as the primary project manager. It orchestrates the efforts of other agents, ensures seamless integration between frontend and backend components, and oversees the entire development lifecycle.
+
+Responsibilities:
+
+Define overall project architecture and technology stack (Firebase, Frontend Framework).
+
+Coordinate tasks between OpenSWE, Kombai, and Firebase Studio.
+
+Ensure data flow consistency between frontend and backend.
+
+Manage CI/CD pipeline setup and ensure smooth deployments.
+
+Conduct code reviews and ensure best practices are followed.
+
+Handle cross-cutting concerns like security, performance, and scalability.
+
+Provide high-level guidance and problem-solving.
+
+2. OpenSWE (Backend & Cloud Functions Specialist) ☁️
+Role: OpenSWE is responsible for all server-side logic, Firebase backend configurations, and Cloud Functions development.
+
+Responsibilities:
+
+Design and implement Firebase Cloud Firestore/Realtime Database security rules.
+
+Develop Cloud Functions for:
+
+Processing payments (e.g., using Stripe, PayPal integrations).
+
+Sending transactional emails (order confirmations, shipping updates).
+
+Managing product inventory updates.
+
+Handling user authentication triggers (e.g., creating a new user profile document upon sign-up).
+
+Data validation and transformation.
+
+Optimize database queries and structure for performance.
+
+Integrate third-party APIs as needed (e.g., shipping carriers, payment gateways).
+
+Assist in initial data migration of your JSON data into Firestore/Realtime Database.
+
+3. Kombai (Frontend UI/UX Developer) 🎨
+Role: Kombai focuses on the user interface and user experience of the e-commerce web application. It translates design concepts into functional, responsive, and aesthetically pleasing web pages.
+
+Responsibilities:
+
+Develop responsive and interactive UI components for product listings, product details, shopping cart, checkout, and user profiles.
+
+Implement user authentication flows based on Firebase Authentication.
+
+Integrate with Firebase client-side SDKs for real-time data fetching and updates from Firestore/Realtime Database.
+
+Ensure cross-browser compatibility and accessibility.
+
+Implement smooth navigation and interactive elements.
+
+Optimize frontend performance (loading times, responsiveness).
+
+Handle state management for the frontend application.
+
+4. Firebase Studio (Firebase Configuration & Monitoring) 📊
+Role: Firebase Studio acts as the dedicated expert for setting up, configuring, and monitoring all Firebase services. It provides insights into database usage, function performance, and hosting metrics.
+
+Responsibilities:
+
+Set up and manage the Firebase project in the Google Cloud Console.
+
+Configure Firebase Authentication providers.
+
+Structure the Cloud Firestore/Realtime Database collections and documents based on the provided JSON data.
+
+Manage Firebase Hosting sites and custom domains.
+
+Monitor application performance, database reads/writes, function invocations, and hosting traffic.
+
+Manage Firebase Storage buckets and access rules for product images.
+
+Assist in debugging Firebase-related issues and optimizing configurations.
+
+🚀 Project Requirements: Firebase Backend
+1. Firebase Project Setup
+A dedicated Firebase project for the e-commerce application.
+
+Enabled services: Authentication, Firestore, Storage, Cloud Functions, Hosting.
+
+2. Database (Cloud Firestore - Recommended)
+Collections:
+
+products: Stores product details (name, description, price, stock, images, categories, etc.).
+
+users: Stores user profiles (ID, email, name, shipping addresses, order history references).
+
+carts: Stores active shopping carts for users (user ID, product items, quantities).
+
+orders: Stores completed order details (user ID, ordered items, total amount, shipping info, status, timestamp).
+
+categories: (Optional) For organizing products into categories.
+
+Data Structure: Your existing JSON data will be used to populate these collections. Consider how to de-normalize data for efficient querying (e.g., including product name/price in cart items to avoid extra lookups on initial cart view).
+
+Security Rules: Implement robust Firestore security rules to control read/write access based on user authentication and roles (e.g., only authenticated users can view their own cart, only admins can modify products).
+
+3. Firebase Storage
+A dedicated bucket for storing product images.
+
+Security rules to ensure only authenticated users can upload (if applicable) and everyone can read product images.
+
+4. Cloud Functions
+Authentication Triggers:
+
+onCreateUser: To create a new user profile document in Firestore when a user signs up.
+
+Firestore Triggers:
+
+onUpdateOrder: To send order confirmation emails or update inventory when an order status changes.
+
+onDeleteCartItem: (Optional) To re-adjust stock if an item is removed from a cart after a certain time.
+
+HTTPS Callable Functions:
+
+processPayment: To securely handle payment gateway interactions.
+
+checkout: To finalize an order, clear the cart, and update product stock.
+
+🌐 Project Requirements: Frontend Web App
+1. Technology Stack
+Frontend Framework: React, Angular, or a similar modern JavaScript framework is recommended for building a dynamic and interactive UI.
+
+Styling: Tailwind CSS for utility-first styling and responsiveness.
+
+2. Core Features
+User Authentication:
+
+Sign-up (email/password, Google, etc.).
+
+Login.
+
+Password reset.
+
+User profile management.
+
+Product Catalog:
+
+Browse products by category.
+
+Search for products.
+
+View product details (images, description, price, stock).
+
+Shopping Cart:
+
+Add/remove items from the cart.
+
+Update item quantities.
+
+View cart summary.
+
+Checkout Process:
+
+Shipping address input.
+
+Payment method selection (integration with a payment gateway via Cloud Functions).
+
+Order confirmation.
+
+Order History:
+
+View past orders and their statuses.
+
+Responsive Design: The application must be fully responsive and provide an optimal user experience across all devices (mobile, tablet, desktop).
+
+3. Firebase Client-Side Integrations
+Utilize Firebase SDKs for client-side interactions with Authentication, Firestore, and Storage.
+
+Real-time listeners for dynamic content updates (e.g., stock changes, new products).
+
+🛠️ CI/CD & GitHub Hosting
+GitHub Repository: A dedicated public/private GitHub repository to host the frontend web app code and CI/CD workflow files.
+
+Firebase Hosting: Configured to host the compiled frontend assets.
+
+GitHub Actions Workflow:
+
+Trigger on push to main branch.
+
+Steps: checkout, setup-node, npm install, npm run build, firebase deploy --only hosting.
+
+Utilize FIREBASE_TOKEN as a GitHub secret for secure deployment authentication.
